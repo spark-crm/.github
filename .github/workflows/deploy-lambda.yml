@@ -36,7 +36,7 @@ jobs:
           name: lambda-zip
 
       - name: Write Environment
-        run: echo "${{ inputs.environment }}"
+        run: echo "${{ inputs.version-alias }}"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
