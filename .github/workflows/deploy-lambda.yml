@@ -1,0 +1,68 @@
+name: Deploy to Lambda
+
+on:
+  workflow_call:
+    inputs:
+      sha:
+        required: true
+        type: string
+      s3-bucket:
+        required: true
+        type: string
+      function-name:
+        required: true
+        type: string
+      version-alias:
+        required: false
+        type: string
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+      AWS_REGION:
+        required: true
+
+jobs:
+  deploy:
+    name: Deploy to Lambda
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Upload to S3
+        run: aws s3 cp lambda.zip s3://${{ inputs.s3-bucket }}/${{ inputs.function-name }}/${{ inputs.sha }}.zip
+
+      - name: Deploy to Lambda from S3
+        run: |
+          aws lambda update-function-code \
+            --function-name ${{ inputs.function-name }} \
+            --s3-bucket ${{ inputs.s3-bucket }} \
+            --s3-key ${{ inputs.function-name }}/${{ inputs.sha }}.zip
+
+      - name: Wait for Lambda update to complete
+        run: |
+          aws lambda wait function-updated \
+            --function-name ${{ inputs.function-name }}
+
+      - name: Update or Create Lambda Alias
+        if: ${{ inputs.version-alias }}
+        run: |
+          version=$(aws lambda publish-version --function-name ${{ inputs.function-name }} --query 'Version' --output text)
+          alias_exists=$(aws lambda get-alias --function-name ${{ inputs.function-name }} --name ${{ inputs.version-alias }} 2>&1 || true)
+          if echo "$alias_exists" | grep -q 'ResourceNotFoundException'; then
+            aws lambda create-alias \
+              --function-name ${{ inputs.function-name }} \
+              --name ${{ inputs.version-alias }} \
+              --function-version $version
+          else
+            aws lambda update-alias \
+              --function-name ${{ inputs.function-name }} \
+              --name ${{ inputs.version-alias }} \
+              --function-version $version
+          fi
