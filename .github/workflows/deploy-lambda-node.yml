@@ -1,4 +1,4 @@
-name: Deploy to Lambda
+name: Deploy to Lambda (Node.js)
 
 on:
   workflow_call:
@@ -31,18 +31,11 @@ jobs:
     outputs:
       sha: ${{ steps.get-sha.outputs.SHA }}
     steps:
+
       - name: Get SHA
         id: get-sha
         run: echo "SHA=${GITHUB_SHA:0:8}" >> $GITHUB_OUTPUT
 
-  deploy:
-    name: Deploy to Lambda
-    needs: [ prepare ]
-    runs-on: ubuntu-latest
-    environment:
-      name: ${{ inputs.environment }}
-      url: ${{ inputs.lambda-url }}
-    steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -58,10 +51,19 @@ jobs:
       - name: Zip Package
         run: zip -rq lambda.zip node_modules index.js index.mjs
 
-      - name: Call Reusable Workflow for Deployment
-        uses: checkout-org/.github/.github/workflows/deploy-lambda-node.yml@master
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
         with:
-          sha: ${{ needs.prepare.outputs.sha }}
-          s3-bucket: ${{ secrets.S3_BUCKET }}
-          function-name: ${{ secrets.FUNCTION_NAME }}
-          version-alias: ${{ vars.VERSION_ALIAS }}
+          name: lambda-zip
+          path: lambda.zip
+
+  deploy:
+    name: Deploy
+    needs: [ prepare ]
+    uses: checkout-org/.github/.github/workflows/deploy-lambda.yml@master
+    with:
+      sha: ${{ needs.prepare.outputs.sha }}
+      s3-bucket: ${{ secrets.S3_BUCKET }}
+      function-name: ${{ secrets.FUNCTION_NAME }}
+      version-alias: ${{ vars.VERSION_ALIAS }}
+    secrets: inherit
