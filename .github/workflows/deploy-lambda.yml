@@ -3,6 +3,9 @@ name: Deploy to Lambda
 on:
   workflow_call:
     inputs:
+      environment:
+        required: true
+        type: string
       sha:
         required: true
         type: string
