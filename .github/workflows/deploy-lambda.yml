@@ -40,33 +40,33 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Upload to S3
-        run: aws s3 cp lambda.zip s3://${{ secrets.s3-bucket }}/${{ secrets.function-name }}/${{ inputs.sha }}.zip
+        run: aws s3 cp lambda.zip s3://${{ secrets.S3_BUCKET }}/${{ secrets.FUNCTION_NAME }}/${{ inputs.sha }}.zip
 
       - name: Deploy to Lambda from S3
         run: |
           aws lambda update-function-code \
-            --function-name ${{ secrets.function-name }} \
-            --s3-bucket ${{ secrets.s3-bucket }} \
-            --s3-key ${{ secrets.function-name }}/${{ inputs.sha }}.zip
+            --function-name ${{ secrets.FUNCTION_NAME }} \
+            --s3-bucket ${{ secrets.S3_BUCKET }} \
+            --s3-key ${{ secrets.FUNCTION_NAME }}/${{ inputs.sha }}.zip
 
       - name: Wait for Lambda update to complete
         run: |
           aws lambda wait function-updated \
-            --function-name ${{ secrets.function-name }}
+            --function-name ${{ secrets.FUNCTION_NAME }}
 
       - name: Update or Create Lambda Alias
         if: ${{ inputs.version-alias }}
         run: |
-          version=$(aws lambda publish-version --function-name ${{ secrets.function-name }} --query 'Version' --output text)
-          alias_exists=$(aws lambda get-alias --function-name ${{ secrets.function-name }} --name ${{ inputs.version-alias }} 2>&1 || true)
+          version=$(aws lambda publish-version --function-name ${{ secrets.FUNCTION_NAME }} --query 'Version' --output text)
+          alias_exists=$(aws lambda get-alias --function-name ${{ secrets.FUNCTION_NAME }} --name ${{ inputs.version-alias }} 2>&1 || true)
           if echo "$alias_exists" | grep -q 'ResourceNotFoundException'; then
             aws lambda create-alias \
-              --function-name ${{ secrets.function-name }} \
+              --function-name ${{ secrets.FUNCTION_NAME }} \
               --name ${{ inputs.version-alias }} \
               --function-version $version
           else
             aws lambda update-alias \
-              --function-name ${{ secrets.function-name }} \
+              --function-name ${{ secrets.FUNCTION_NAME }} \
               --name ${{ inputs.version-alias }} \
               --function-version $version
           fi
