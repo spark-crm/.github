@@ -59,7 +59,7 @@ jobs:
         run: zip -rq lambda.zip node_modules index.js index.mjs
 
       - name: Call Reusable Workflow for Deployment
-        uses: ./.github/workflows/deploy-lambda.yml
+        uses: checkout-org/.github/.github/workflows/deploy-lambda-node.yml@master
         with:
           sha: ${{ needs.prepare.outputs.sha }}
           s3-bucket: ${{ secrets.S3_BUCKET }}
