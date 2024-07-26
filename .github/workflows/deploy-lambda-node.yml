@@ -63,7 +63,5 @@ jobs:
     uses: checkout-org/.github/.github/workflows/deploy-lambda.yml@master
     with:
       sha: ${{ needs.prepare.outputs.sha }}
-      s3-bucket: ${{ secrets.S3_BUCKET }}
-      function-name: ${{ secrets.FUNCTION_NAME }}
       version-alias: ${{ vars.VERSION_ALIAS }}
     secrets: inherit

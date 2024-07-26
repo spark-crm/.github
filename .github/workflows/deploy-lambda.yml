@@ -6,12 +6,6 @@ on:
       sha:
         required: true
         type: string
-      s3-bucket:
-        required: true
-        type: string
-      function-name:
-        required: true
-        type: string
       version-alias:
         required: false
         type: string
@@ -21,6 +15,10 @@ on:
       AWS_SECRET_ACCESS_KEY:
         required: true
       AWS_REGION:
+        required: true
+      FUNCTION_NAME:
+        required: true
+      S3_BUCKET:
         required: true
 
 jobs:
