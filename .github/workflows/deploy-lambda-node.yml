@@ -64,5 +64,4 @@ jobs:
     with:
       environment: ${{ inputs.environment }}
       sha: ${{ needs.prepare.outputs.sha }}
-      version-alias: ${{ vars.VERSION_ALIAS }}
     secrets: inherit
