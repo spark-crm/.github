@@ -28,15 +28,13 @@ jobs:
   deploy:
     name: Deploy to Lambda
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     steps:
 
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
           name: lambda-zip
-
-      - name: Write Environment
-        run: echo "${{ inputs.version-alias }}"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4

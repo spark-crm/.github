@@ -36,9 +36,6 @@ jobs:
         id: get-sha
         run: echo "SHA=${GITHUB_SHA:0:8}" >> $GITHUB_OUTPUT
 
-      - name: Write Environment
-        run: echo "${{ vars.VERSION_ALIAS }}"
-
       - name: Checkout code
         uses: actions/checkout@v4
 
