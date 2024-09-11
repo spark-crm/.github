@@ -41,7 +41,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Upload to S3
-        run: aws s3 cp lambda.zip s3://${{ secrets.S3_BUCKET }}/${{ secrets.FUNCTION_NAME }}/${{ inputs.sha }}.zip
+        run: aws s3 cp lambda.zip s3://${{ secrets.S3_BUCKET }}/${{ secrets.FUNCTION_NAME }}/${{ inputs.sha }}.zip --no-clobber
 
       - name: Deploy to Lambda from S3
         run: |
