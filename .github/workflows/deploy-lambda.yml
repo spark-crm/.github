@@ -57,7 +57,9 @@ jobs:
           aws lambda update-function-code \
             --function-name ${{ secrets.FUNCTION_NAME }} \
             --s3-bucket ${{ secrets.S3_BUCKET }} \
-            --s3-key ${{ secrets.FUNCTION_NAME }}/${{ inputs.sha }}.zip
+            --s3-key ${{ secrets.FUNCTION_NAME }}/${{ inputs.sha }}.zip \
+            --region ${{ secrets.AWS_FUNCTION_REGION || secrets.AWS_REGION }}
+            --s3-bucket-region ${{ secrets.AWS_REGION }}
 
       - name: Wait for Lambda update to complete
         run: |
