@@ -62,7 +62,7 @@ jobs:
       - name: Check if S3 bucket exists
         id: bucket-exists-check
         run: |
-          if aws s3 ls "s3://${{ secrets.S3_BUCKET }}" > /dev/null 2>&1; then
+          if aws s3 ls "s3://${{ secrets.S3_BUCKET }}" --region ${{ matrix.region }} > /dev/null 2>&1; then
             echo "BUCKET_EXISTS=true" >> $GITHUB_ENV
           else
             echo "BUCKET_EXISTS=false" >> $GITHUB_ENV
