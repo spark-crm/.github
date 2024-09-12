@@ -66,6 +66,7 @@ jobs:
             echo "BUCKET_EXISTS=true" >> $GITHUB_ENV
           else
             echo "BUCKET_EXISTS=false" >> $GITHUB_ENV
+          fi
 
       - name: Upload to S3
         if: env.BUCKET_EXISTS == 'true'
