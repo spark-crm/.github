@@ -23,7 +23,7 @@ on:
       FUNCTION_NAME:
         required: true
       S3_BUCKET:
-        required: true
+        required: false
 
 jobs:
 

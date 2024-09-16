@@ -20,7 +20,7 @@ on:
       FUNCTION_NAME:
         required: true
       S3_BUCKET:
-        required: true
+        required: false
 
 jobs:
 
@@ -62,7 +62,7 @@ jobs:
       - name: Check if S3 bucket exists
         id: bucket-exists-check
         run: |
-          bucket_region=$(aws s3api get-bucket-location --bucket "${{ secrets.S3_BUCKET }}" --output text)
+          bucket_region=$(aws s3api get-bucket-location --bucket "${{ secrets.LAMBDA_BUCKET || secrets.S3_BUCKET }}" --output text)
           
           if [[ "$bucket_region" == "None" ]]; then
             bucket_region="us-east-1"
@@ -76,14 +76,14 @@ jobs:
 
       - name: Upload to S3
         if: env.BUCKET_EXISTS == 'true'
-        run: aws s3 cp lambda.zip s3://${{ secrets.S3_BUCKET }}/${{ secrets.FUNCTION_NAME }}/${{ inputs.sha }}.zip
+        run: aws s3 cp lambda.zip s3://${{ secrets.LAMBDA_BUCKET || secrets.S3_BUCKET }}/${{ secrets.FUNCTION_NAME }}/${{ inputs.sha }}.zip
 
       - name: Deploy to Lambda from S3
         if: env.BUCKET_EXISTS == 'true'
         run: |
           aws lambda update-function-code \
             --function-name ${{ secrets.FUNCTION_NAME }} \
-            --s3-bucket ${{ secrets.S3_BUCKET }} \
+            --s3-bucket ${{ secrets.LAMBDA_BUCKET || secrets.S3_BUCKET }} \
             --s3-key ${{ secrets.FUNCTION_NAME }}/${{ inputs.sha }}.zip \
 
       - name: Deploy to Lambda from Zip File
