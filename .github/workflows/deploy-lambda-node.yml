@@ -61,7 +61,7 @@ jobs:
   deploy:
     name: Deploy
     needs: [ prepare ]
-    uses: checkout-org/.github/.github/workflows/deploy-lambda.yml@master
+    uses: spark-crm/.github/.github/workflows/deploy-lambda.yml@master
     with:
       environment: ${{ inputs.environment }}
       sha: ${{ needs.prepare.outputs.sha }}

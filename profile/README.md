@@ -1,15 +1,15 @@
-<p align="center"><a href="https://checkout.app" target="_blank"><img src="https://raw.githubusercontent.com/checkout-org/art/master/logo-type/5%20SVG/2%20RGB/1%20Full%20Color/logo-type-rgb-blue.svg" width="300"></a></p>
+<p align="center"><a href="https://sparkcrm.io" target="_blank"><img src="https://raw.githubusercontent.com/spark-crm/art/master/logo-type/5%20SVG/2%20RGB/1%20Full%20Color/logo-type-rgb-blue.svg" width="300"></a></p>
 
-## About Checkout
+## About Spark
 
-Checkout delivers a comprehensive CRM system designed for the dynamic needs of e-commerce. At its core, Checkout enables
+Spark delivers a comprehensive CRM system designed for the dynamic needs of e-commerce. At its core, Spark enables
 the generation and tracking of high-impact e-commerce campaigns through customizable landing pages. Integrated deeply
 with social media marketing, our platform offers businesses a seamless avenue to amplify their product promotions, while
 providing granular insights into customer interactions.
 
 ### Campaign Creation & Management
 
-Leverage Checkout to craft and deploy captivating landing pages, fine-tuned for conversion. Our intuitive platform
+Leverage Spark to craft and deploy captivating landing pages, fine-tuned for conversion. Our intuitive platform
 allows for:
 
 - *Custom Payment Providers* - Flexibility to integrate with your chosen payment gateways, ensuring seamless transaction
@@ -32,7 +32,7 @@ Our system is built to not just launch campaigns but to optimize them:
 
 ### Simplifying E-Commerce
 
-Checkout is your all-encompassing solution for e-commerce campaign management, designed to simplify the process of
+Spark is your all-encompassing solution for e-commerce campaign management, designed to simplify the process of
 promoting and selling products online:
 
 - *One-Stop Shop* - From campaign creation to payment processing and shipping, everything you need is right here.
